@@ -21,10 +21,10 @@
         </activity>
         <activity
             android:name=".WalkingActivity"
-            android:parentActivityName=".MainActivity" >
+            android:parentActivityName=".SummaryActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.knowledgeprice.bandhack.MainActivity" />
+                android:value="com.knowledgeprice.bandhack.SummaryActivity" />
         </activity>
         <activity
             android:name=".SummaryActivity"

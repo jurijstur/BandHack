@@ -98,6 +98,10 @@ public class MainActivity extends ActionBarActivity {
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+            if(position == 0) {
+                Intent intent = new Intent(MainActivity.this, SummaryActivity.class);
+                startActivity(intent);
+            }
             mDrawerLayout.closeDrawer(mDrawerList);
         }
     }

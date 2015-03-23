@@ -63,6 +63,7 @@
                 <LinearLayout
                     style="@style/horizontal_navigation">
                     <ImageButton
+                        android:id="@+id/walkingSubmenu"
                         android:layout_width="80dp"
                         android:layout_height="80dp"/>
                     <TextView
