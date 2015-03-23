@@ -9,6 +9,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,6 +30,9 @@ import com.microsoft.band.sensors.BandSensorManager;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -46,6 +50,10 @@ public class MainActivity extends ActionBarActivity {
     private ActionBarDrawerToggle mDrawerToggle;
 
     private AtomicReference<BandPedometerEvent> mPendingPedometerEvent = new AtomicReference<BandPedometerEvent>();
+
+    private final ScheduledExecutorService scheduler =
+            Executors.newScheduledThreadPool(1);
+    private ScheduledFuture mRefreshHandle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -159,7 +167,13 @@ public class MainActivity extends ActionBarActivity {
         if (result != ConnectionResult.OK) {
             Util.showExceptionAlert(this, "Connect", new Exception("Connection failed: result=" + result.toString()));
         } else {
-            onRefresh();
+
+            final Runnable refresh = new Runnable() {
+                public void run() {
+                    onRefresh();
+                }
+            };
+            mRefreshHandle = scheduler.scheduleAtFixedRate(refresh, 0, 1, TimeUnit.MINUTES);
         }
     }
 
@@ -188,6 +202,8 @@ public class MainActivity extends ActionBarActivity {
             Intent intent = new Intent(DATA_CHANGED);
             this.sendBroadcast(intent);
 
+            Log.w("Test", String.format("%d", pedometerEvent.getTotalSteps()));
+
             try {
                 sensorMgr.unregisterPedometerEventListener(mPedometerEventListener);
             } catch (BandException ex) {
@@ -209,6 +225,7 @@ public class MainActivity extends ActionBarActivity {
         super.onDestroy();
         try {
             if (Model.getInstance().isConnected()) {
+                mRefreshHandle.cancel(true);
                 Model.getInstance().getClient().disconnect().await();
             }
         } catch (Exception e) {
