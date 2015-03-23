@@ -20,7 +20,8 @@
         <View
             android:id="@+id/progress"
             android:layout_width="wrap_content"
-            android:layout_height="10dp">
+            android:layout_height="10dp"
+            android:background="@android:color/holo_green_dark">
         </View>
         <View
             android:layout_width="wrap_content"

@@ -99,21 +99,25 @@ public class MainActivity extends ActionBarActivity {
             }
         });
 
-        connect();
+        setPosition(0);
 
+        connect();
     }
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-            if(position == 0) {
-                Intent intent = new Intent(MainActivity.this, SummaryActivity.class);
-                startActivity(intent);
-            }
+            setPosition(position);
             mDrawerLayout.closeDrawer(mDrawerList);
         }
     }
 
+    protected void setPosition(int position) {
+        if(position == 0) {
+            Intent intent = new Intent(MainActivity.this, SummaryActivity.class);
+            startActivity(intent);
+        }
+    }
 
     private SimpleAdapter createOptionsAdapter() {
         List<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
