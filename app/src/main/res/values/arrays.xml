@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="menu_array">
+        <item>Your score</item>
+        <item>Health Tips</item>
+        <item>Get in touch</item>
+        <item>Get a quote</item>
+        <item>Settings</item>
+    </string-array>
+
+    <array name="menu_icon_array">
+    </array>
+
+</resources>

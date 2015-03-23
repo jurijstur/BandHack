@@ -2,5 +2,12 @@
     <string name="app_name">BandHack</string>
 
     <string name="hello_world">Hello world!</string>
+    <string name="action_refresh">Refresh</string>
+    <string name="drawer_open">Open drawer</string>
+    <string name="drawer_close">Close drawer</string>
+
+    <string name="walking_title">Walking</string>
+    <string name="walking_info">Number of steps per day</string>
     <string name="action_settings">Settings</string>
+
 </resources>

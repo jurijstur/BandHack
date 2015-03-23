@@ -40,4 +40,14 @@ public class Model {
     public boolean isConnected() {
         return (mClient != null) && mClient.isConnected();
     }
+
+    private long totalSteps;
+
+    public long getTotalSteps() {
+        return totalSteps;
+    }
+
+    public void setTotalSteps(long totalSteps) {
+        this.totalSteps = totalSteps;
+    }
 }
