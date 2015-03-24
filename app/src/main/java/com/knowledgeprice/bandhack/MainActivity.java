@@ -104,28 +104,28 @@ public class MainActivity extends ActionBarActivity {
             }
         });
 
-        setPosition(0);
+        loadSummary();
 
         connect();
     }
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-            setPosition(position);
+            if(position == 0) {
+                loadSummary();
+            }
             mDrawerLayout.closeDrawer(mDrawerList);
         }
     }
 
-    protected void setPosition(int position) {
-        if(position == 0) {
-            FragmentManager fragmentManager = getSupportFragmentManager();
+    protected void loadSummary() {
 
-            SummaryFragment fragment = new SummaryFragment();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.content_frame, fragment)
-                    .commit();
-        }
+        FragmentManager fragmentManager = getSupportFragmentManager();
+
+        SummaryFragment fragment = new SummaryFragment();
+        fragmentManager.beginTransaction()
+                .replace(R.id.content_frame, fragment)
+                .commit();
     }
 
     private SimpleAdapter createOptionsAdapter() {
@@ -214,7 +214,6 @@ public class MainActivity extends ActionBarActivity {
         BandPedometerEvent pedometerEvent = mPendingPedometerEvent.getAndSet(null);
         if (pedometerEvent != null) {
             Model.getInstance().setTotalSteps(pedometerEvent.getTotalSteps());
-            setPosition(0);
             try {
                 sensorMgr.unregisterPedometerEventListener(mPedometerEventListener);
             } catch (BandException ex) {

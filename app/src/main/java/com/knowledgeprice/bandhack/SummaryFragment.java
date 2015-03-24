@@ -1,5 +1,6 @@
 package com.knowledgeprice.bandhack;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -37,11 +38,23 @@ public class SummaryFragment extends Fragment {
 
     RelativeLayout mLayout;
 
-    Boolean mReceiverIsRegistered = false;
+    Model.OnDataChangedListener onDataChangedListener = new Model.OnDataChangedListener() {
+        @Override
+        public void totalStepsChanged() {
+            setData();
+        }
+    };
 
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        Model.getInstance().addOnDataChangedListener(onDataChangedListener);
+    }
 
-    protected void onRefreshData() {
-
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        Model.getInstance().removeOnDataChangedListener(onDataChangedListener);
     }
 
     @Override
@@ -50,7 +63,6 @@ public class SummaryFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         mLayout = (RelativeLayout) inflater.inflate(R.layout.activity_summary, container, false);
-
 
         ImageButton nav = (ImageButton)mLayout.findViewById(R.id.walkingSubmenu);
         nav.setOnClickListener(new View.OnClickListener() {
@@ -80,11 +92,16 @@ public class SummaryFragment extends Fragment {
             }
         });
 
+        setData();
+
+        return mLayout;
+    }
+
+    protected void setData() {
         long stepCount = Model.getInstance().getTotalSteps();
         Log.v("DEZ", "stepCount: " + Long.toString(stepCount));
         setDiscountLevel(calculateDiscountLevel(stepCount));
         setCalculatedScore(calculateScore(stepCount));
-        return mLayout;
     }
 
     private void setDiscountLevel(DiscountLevel level) {
@@ -137,7 +154,7 @@ public class SummaryFragment extends Fragment {
     }
 
     private String calculateScore(long stepCount) {
-        int maxSteps = 15000;
+        int maxSteps = 920;
 
         BigDecimal calculatedScore = new BigDecimal(stepCount).divide(new BigDecimal(maxSteps), 3, RoundingMode.HALF_UP);
         calculatedScore = calculatedScore.multiply(new BigDecimal(10)).setScale(2, BigDecimal.ROUND_HALF_UP);

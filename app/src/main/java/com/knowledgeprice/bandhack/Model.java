@@ -19,7 +19,23 @@ package com.knowledgeprice.bandhack;
 
 import com.microsoft.band.BandClient;
 
+import java.util.ArrayList;
+
 public class Model {
+
+    ArrayList<OnDataChangedListener> mListeners = new ArrayList<OnDataChangedListener>();
+
+    public interface OnDataChangedListener {
+        void totalStepsChanged();
+    }
+
+    public void addOnDataChangedListener(OnDataChangedListener listener) {
+        mListeners.add(listener);
+    }
+
+    public void removeOnDataChangedListener(OnDataChangedListener listener) {
+        mListeners.remove(listener);
+    }
 
     private static Model INSTANCE = new Model();
 
@@ -49,5 +65,8 @@ public class Model {
 
     public void setTotalSteps(long totalSteps) {
         this.totalSteps = totalSteps;
+        for (OnDataChangedListener listener : mListeners) {
+            listener.totalStepsChanged();
+        }
     }
 }
