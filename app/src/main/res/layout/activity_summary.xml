@@ -1,52 +1,107 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:layout_height="match_parent"
+    android:background="@color/aviva_white"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="com.knowledgeprice.bandhack.SummaryActivity$PlaceholderFragment">
-
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:id="@+id/scoreRow"
         android:orientation="vertical">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/default_summary_score"
-            android:textSize="100sp"
-            android:id="@+id/calculatedScore"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="@string/your_score_text"
-            android:textSize="25sp"/>
+            android:text="Aviva Health"
+            android:textSize="35sp"
+            android:layout_marginLeft="20dp"
+            android:textColor="@color/aviva_blue"/>
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="0.5"
+                android:layout_marginTop="20dp"
+                android:gravity="center_horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="@string/default_summary_score"
+                    android:textSize="80sp"
+                    android:id="@+id/calculatedScore"
+                    android:textColor="@color/aviva_blue"/>
 
-        <TextView
-            android:layout_width="wrap_content"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/your_score_text"
+                    android:textSize="22sp"
+                    android:textColor="@color/aviva_blue"/>
+            </LinearLayout>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/quicktips"
+                android:layout_gravity="bottom"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/default_discount"
-            android:id="@+id/discountAmount"
-            android:gravity="center_vertical"
-            android:textSize="80sp"/>
+            android:baselineAligned="false"
+            android:layout_marginTop="20dp"
+            >
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:layout_weight="0.5"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="@string/default_discount"
+                    android:id="@+id/discountAmount"
+                    android:gravity="center_vertical"
+                    android:textSize="80sp"
+                    android:textColor="@color/aviva_blue"/>
 
-        <TextView
-            android:layout_width="wrap_content"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/current_discount_label"
+                    android:id="@+id/currentDiscount"
+                    android:gravity="center_horizontal"
+                    android:textSize="22sp"
+                    android:inputType="textMultiLine"
+                    android:textColor="@color/aviva_blue"
+                    />
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/notifications"
+                android:layout_gravity="bottom"
+                android:layout_weight=""/>
+        </LinearLayout>
+        <View
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="@string/current_discount_label"
-            android:id="@+id/currentDiscount"
-            android:gravity="top"
-            android:layout_weight="1"
-            android:textSize="25sp"
-            />
-
+            android:layout_weight="1" />
         <HorizontalScrollView
             android:id="@+id/sensorsRow"
             android:layout_width="fill_parent"
@@ -57,11 +112,11 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:gravity="center_vertical"
-                android:background="@color/primary_material_light"
                 android:paddingLeft="25dp">
 
                 <LinearLayout
-                    style="@style/horizontal_navigation">
+                    style="@style/horizontal_navigation"
+                    android:background="@color/aviva_green">
                     <ImageButton
                         android:id="@+id/walkingSubmenu"
                         android:layout_width="80dp"
@@ -70,11 +125,13 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:text="Walking"
-                        android:gravity="center_horizontal"/>
+                        android:gravity="center_horizontal"
+                        android:textColor="@color/aviva_white"/>
                 </LinearLayout>
 
                 <LinearLayout
-                    style="@style/horizontal_navigation">
+                    style="@style/horizontal_navigation"
+                    android:background="@color/aviva_orange">
                     <ImageButton
                         android:layout_width="80dp"
                         android:layout_height="80dp"/>
@@ -82,19 +139,22 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/sleep_subtitle"
-                        android:gravity="center_horizontal"/>
+                        android:gravity="center_horizontal"
+                        android:textColor="@color/aviva_white"/>
                 </LinearLayout>
 
                 <LinearLayout
-                    style="@style/horizontal_navigation">
+                    style="@style/horizontal_navigation"
+                    android:background="@color/aviva_green">
                     <ImageButton
                         android:layout_width="80dp"
                         android:layout_height="80dp"/>
                     <TextView
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:text="Heart"
-                        android:gravity="center_horizontal"/>
+                        android:text="@string/heart_subtitle"
+                        android:gravity="center_horizontal"
+                        android:textColor="@color/aviva_white"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -106,7 +166,8 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/calories_subtitle"
-                        android:gravity="center_horizontal"/>
+                        android:gravity="center_horizontal"
+                        android:textColor="@color/aviva_white"/>
                 </LinearLayout>
             </LinearLayout>
         </HorizontalScrollView>

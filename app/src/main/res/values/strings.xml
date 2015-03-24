@@ -16,4 +16,5 @@
     <string name="current_discount_label">Current discount</string>
     <string name="sleep_subtitle">Sleep</string>
     <string name="calories_subtitle">Calories</string>
+    <string name="heart_subtitle">Heart</string>
 </resources>

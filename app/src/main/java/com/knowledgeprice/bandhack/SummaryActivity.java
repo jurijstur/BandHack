@@ -15,6 +15,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.math.BigDecimal;
+import java.text.NumberFormat;
 
 
 public class SummaryActivity extends ActionBarActivity {
@@ -138,7 +139,7 @@ public class SummaryActivity extends ActionBarActivity {
         int maxSteps = 15000;
 
        BigDecimal calculatedScore = new BigDecimal(stepCount).divide(new BigDecimal(maxSteps));
-       calculatedScore.setScale(2, BigDecimal.ROUND_UP);
+       calculatedScore = calculatedScore.setScale(2, BigDecimal.ROUND_HALF_UP);
        if (calculatedScore.compareTo(new BigDecimal(1.0)) > 0) {
            return "1.00";
        } else {
