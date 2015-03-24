@@ -17,10 +17,20 @@ public class WalkingActivity extends ActionBarActivity {
 
         setTitle(R.string.walking_title);
 
-        View progress = (View) findViewById(R.id.progress);
-        progress.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 10, 0.5f));
+        setProgressBar(30, R.id.today);
+        setProgressBar(60, R.id.average);
+        setProgressBar(90, R.id.next_goal);
     }
 
+    protected void setProgressBar(int percent, int bar) {
+        float progressValue = percent * 0.01f;
+        LinearLayout barLayout = (LinearLayout) findViewById(bar);
+        View progress = barLayout.findViewById(R.id.progress);
+        progress.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT, 1 - progressValue));
+        View progressLeft = barLayout.findViewById(R.id.progressLeft);
+        progressLeft.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT, progressValue));
+
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
