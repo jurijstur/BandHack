@@ -124,13 +124,13 @@ public class SummaryFragment extends Fragment {
     private String calculateScore(long stepCount) {
         int maxSteps = 15000;
 
-       BigDecimal calculatedScore = new BigDecimal(stepCount).divide(new BigDecimal(maxSteps));
-       calculatedScore = calculatedScore.setScale(2, BigDecimal.ROUND_HALF_UP);
-       if (calculatedScore.compareTo(new BigDecimal(1.0)) > 0) {
-           return "1.00";
-       } else {
-           return calculatedScore.toString();
-       }
+        BigDecimal calculatedScore = new BigDecimal(stepCount).divide(new BigDecimal(maxSteps));
+        calculatedScore = calculatedScore.setScale(2, BigDecimal.ROUND_HALF_UP);
+        if (calculatedScore.compareTo(new BigDecimal(1.0)) > 0) {
+            return "1.00";
+        } else {
+            return calculatedScore.toString();
+        }
     }
 
     private void setCalculatedScore(String score) {
