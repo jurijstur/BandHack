@@ -1,6 +1,10 @@
 package com.knowledgeprice.bandhack;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.res.Configuration;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,10 +21,31 @@ public class SummaryActivity extends ActionBarActivity {
 
     public enum DiscountLevel { BAD, LOW, MEDIUM, HIGH }
 
+    ReceiveMessages mReceiver = null;
+    Boolean mReceiverIsRegistered = false;
+
+    private class ReceiveMessages extends BroadcastReceiver
+    {
+        @Override
+        public void onReceive(Context context, Intent intent)
+        {
+            String action = intent.getAction();
+            if(action.equals(MainActivity.DATA_CHANGED)){
+                onRefreshData();
+            }
+        }
+    }
+
+    protected void onRefreshData() {
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_summary);
+
+        mReceiver = new ReceiveMessages();
 
         ImageButton nav = (ImageButton)findViewById(R.id.walkingSubmenu);
         nav.setOnClickListener(new View.OnClickListener() {
@@ -124,5 +149,23 @@ public class SummaryActivity extends ActionBarActivity {
     private void setCalculatedScore(String score) {
         TextView calculatedScore = (TextView)findViewById(R.id.calculatedScore);
         calculatedScore.setText(score);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!mReceiverIsRegistered) {
+            registerReceiver(mReceiver, new IntentFilter(MainActivity.DATA_CHANGED));
+            mReceiverIsRegistered = true;
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (mReceiverIsRegistered) {
+            unregisterReceiver(mReceiver);
+            mReceiverIsRegistered = false;
+        }
     }
 }

@@ -4,6 +4,8 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.LinearLayout;
 
 
 public class WalkingActivity extends ActionBarActivity {
@@ -14,6 +16,9 @@ public class WalkingActivity extends ActionBarActivity {
         setContentView(R.layout.activity_walking);
 
         setTitle(R.string.walking_title);
+
+        View progress = (View) findViewById(R.id.progress);
+        progress.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 10, 0.5f));
     }
 
 
