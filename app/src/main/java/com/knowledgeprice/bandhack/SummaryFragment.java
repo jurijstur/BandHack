@@ -21,30 +21,24 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.microsoft.band.notification.MessageFlags;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.NumberFormat;
+import java.util.Date;
+import java.util.UUID;
 
 public class SummaryFragment extends Fragment {
+
+    public final static String MAX_SCORE = "10.00";
 
     public enum DiscountLevel { BAD, LOW, MEDIUM, HIGH }
 
     RelativeLayout mLayout;
 
-    ReceiveMessages mReceiver = null;
     Boolean mReceiverIsRegistered = false;
 
-    private class ReceiveMessages extends BroadcastReceiver
-    {
-        @Override
-        public void onReceive(Context context, Intent intent)
-        {
-            String action = intent.getAction();
-            if(action.equals(MainActivity.DATA_CHANGED)){
-                onRefreshData();
-            }
-        }
-    }
 
     protected void onRefreshData() {
 
@@ -57,7 +51,6 @@ public class SummaryFragment extends Fragment {
 
         mLayout = (RelativeLayout) inflater.inflate(R.layout.activity_summary, container, false);
 
-        mReceiver = new ReceiveMessages();
 
         ImageButton nav = (ImageButton)mLayout.findViewById(R.id.walkingSubmenu);
         nav.setOnClickListener(new View.OnClickListener() {
@@ -99,7 +92,7 @@ public class SummaryFragment extends Fragment {
 
         switch (level) {
             case BAD:
-                discountText = "BAD";
+                discountText = "0%";
                 break;
             case LOW:
                 discountText = "0%";
@@ -146,10 +139,10 @@ public class SummaryFragment extends Fragment {
     private String calculateScore(long stepCount) {
         int maxSteps = 15000;
 
-        BigDecimal calculatedScore = new BigDecimal(stepCount).divide(new BigDecimal(maxSteps), 2, RoundingMode.HALF_UP);
-        calculatedScore = calculatedScore.setScale(2, BigDecimal.ROUND_HALF_UP);
-        if (calculatedScore.compareTo(new BigDecimal(1.0)) > 0) {
-            return "1.00";
+        BigDecimal calculatedScore = new BigDecimal(stepCount).divide(new BigDecimal(maxSteps), 3, RoundingMode.HALF_UP);
+        calculatedScore = calculatedScore.multiply(new BigDecimal(10)).setScale(2, BigDecimal.ROUND_HALF_UP);
+        if (calculatedScore.compareTo(new BigDecimal(10.00)) > 0) {
+            return MAX_SCORE;
         } else {
             return calculatedScore.toString();
         }
@@ -157,6 +150,30 @@ public class SummaryFragment extends Fragment {
 
     private void setCalculatedScore(String score) {
         TextView calculatedScore = (TextView)mLayout.findViewById(R.id.calculatedScore);
+        if(score.equals(MAX_SCORE)) {
+            sendNotificationToBand();
+        }
+
         calculatedScore.setText(score);
+    }
+
+    private void sendNotificationToBand() {
+        try {
+            Log.v("DEZ", "onRefreshData");
+            UUID uuid = UUID.fromString("b6a047f3-3f25-44b4-b907-97e40f4c2445");
+            Model.getInstance()
+                    .getClient()
+                    .getNotificationManager()
+                    .sendMessage(
+                            uuid,
+                            "Daily step count",
+                            "You've achieved hiking goal",
+                            new Date(),
+                            MessageFlags.NONE)
+                    .await();
+
+        } catch (Exception e) {
+            Util.showExceptionAlert(getActivity(), "Send message", e);
+        }
     }
 }

@@ -22,13 +22,19 @@ import com.microsoft.band.BandClientManager;
 import com.microsoft.band.BandDeviceInfo;
 import com.microsoft.band.BandException;
 import com.microsoft.band.ConnectionResult;
+import com.microsoft.band.notification.MessageFlags;
 import com.microsoft.band.sensors.BandPedometerEvent;
 import com.microsoft.band.sensors.BandPedometerEventListener;
 import com.microsoft.band.sensors.BandSensorManager;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -218,9 +224,17 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void onRefresh() {
-        BandSensorManager sensorMgr = Model.getInstance().getClient().getSensorManager();
+        if(!Model.getInstance().isConnected()) {
+            connect();
+            return;
+        }
         try {
+            BandSensorManager sensorMgr = Model.getInstance().getClient().getSensorManager();
             sensorMgr.registerPedometerEventListener(mPedometerEventListener);
+        } catch (NullPointerException e) {
+            Toast toast = Toast.makeText(getBaseContext(), "Client not paired on bluetooth", Toast.LENGTH_LONG);
+            toast.show();
+            return;
         } catch (BandException ex) {
             Util.showExceptionAlert(this, "Register sensor listener", ex);
         }
