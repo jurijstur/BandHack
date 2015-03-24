@@ -15,11 +15,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.NumberFormat;
 
 public class SummaryFragment extends Fragment {
@@ -62,6 +65,25 @@ public class SummaryFragment extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), WalkingActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        ImageView quicktip = (ImageView)mLayout.findViewById(R.id.quicktips_button);
+        quicktip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast toast = Toast.makeText(getActivity().getBaseContext(), "Instead of taxi - take a walk", Toast.LENGTH_SHORT);
+                toast.show();
+
+            }
+        });
+
+        ImageView notifications = (ImageView)mLayout.findViewById(R.id.notification_button);
+        notifications.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast toast = Toast.makeText(getActivity().getBaseContext(), "No new notifications", Toast.LENGTH_SHORT);
+                toast.show();
             }
         });
 
@@ -124,7 +146,7 @@ public class SummaryFragment extends Fragment {
     private String calculateScore(long stepCount) {
         int maxSteps = 15000;
 
-        BigDecimal calculatedScore = new BigDecimal(stepCount).divide(new BigDecimal(maxSteps));
+        BigDecimal calculatedScore = new BigDecimal(stepCount).divide(new BigDecimal(maxSteps), 2, RoundingMode.HALF_UP);
         calculatedScore = calculatedScore.setScale(2, BigDecimal.ROUND_HALF_UP);
         if (calculatedScore.compareTo(new BigDecimal(1.0)) > 0) {
             return "1.00";

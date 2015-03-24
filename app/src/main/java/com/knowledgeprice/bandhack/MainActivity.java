@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.Toast;
 
 import com.microsoft.band.BandClient;
 import com.microsoft.band.BandClientManager;
@@ -140,6 +141,8 @@ public class MainActivity extends ActionBarActivity {
     public void connect() {
         BandDeviceInfo[] pairedBands = BandClientManager.getInstance().getPairedBands();
         if (pairedBands.length  < 1) {
+            Toast toast = Toast.makeText(getBaseContext(), "Please pair with band", Toast.LENGTH_LONG);
+            toast.show();
             return;
         }
 
@@ -205,11 +208,7 @@ public class MainActivity extends ActionBarActivity {
         BandPedometerEvent pedometerEvent = mPendingPedometerEvent.getAndSet(null);
         if (pedometerEvent != null) {
             Model.getInstance().setTotalSteps(pedometerEvent.getTotalSteps());
-            Intent intent = new Intent(DATA_CHANGED);
-            this.sendBroadcast(intent);
-
-            Log.w("Test", String.format("%d", pedometerEvent.getTotalSteps()));
-
+            setPosition(0);
             try {
                 sensorMgr.unregisterPedometerEventListener(mPedometerEventListener);
             } catch (BandException ex) {
@@ -227,8 +226,8 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
-    public void onDestroy() {
-        super.onDestroy();
+    public void onPause() {
+        super.onPause();
         try {
             if (Model.getInstance().isConnected()) {
                 mRefreshHandle.cancel(true);
