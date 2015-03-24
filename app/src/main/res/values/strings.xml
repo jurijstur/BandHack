@@ -22,4 +22,5 @@
     <string name="sleep_subtitle">Sleep</string>
     <string name="calories_subtitle">Calories</string>
     <string name="heart_subtitle">Heart</string>
+    <string name="DEVICE_ID">b6a047f3-3f25-44b4-b907-97e40f4c2445</string>
 </resources>

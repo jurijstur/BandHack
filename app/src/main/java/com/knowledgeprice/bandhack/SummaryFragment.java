@@ -21,7 +21,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.microsoft.band.BandException;
 import com.microsoft.band.notification.MessageFlags;
+import com.microsoft.band.notification.VibrationType;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -31,6 +33,7 @@ import java.util.UUID;
 
 public class SummaryFragment extends Fragment {
 
+    private final static String LOG_TAG = "DEZ";
     public final static String MAX_SCORE = "10.00";
 
     public enum DiscountLevel { BAD, LOW, MEDIUM, HIGH }
@@ -137,7 +140,7 @@ public class SummaryFragment extends Fragment {
     }
 
     private String calculateScore(long stepCount) {
-        int maxSteps = 15000;
+        int maxSteps = 730;
 
         BigDecimal calculatedScore = new BigDecimal(stepCount).divide(new BigDecimal(maxSteps), 3, RoundingMode.HALF_UP);
         calculatedScore = calculatedScore.multiply(new BigDecimal(10)).setScale(2, BigDecimal.ROUND_HALF_UP);
@@ -159,21 +162,32 @@ public class SummaryFragment extends Fragment {
 
     private void sendNotificationToBand() {
         try {
-            Log.v("DEZ", "onRefreshData");
-            UUID uuid = UUID.fromString("b6a047f3-3f25-44b4-b907-97e40f4c2445");
-            Model.getInstance()
-                    .getClient()
-                    .getNotificationManager()
-                    .sendMessage(
-                            uuid,
-                            "Daily step count",
-                            "You've achieved hiking goal",
-                            new Date(),
-                            MessageFlags.NONE)
-                    .await();
+            UUID uuid = UUID.fromString(getString(R.string.DEVICE_ID));
+            Model
+                .getInstance()
+                .getClient()
+                .getNotificationManager()
+                .sendMessage(
+                    uuid,
+                    "Daily step count",
+                    "You've achieved hiking goal",
+                    new Date(),
+                    MessageFlags.NONE)
+                .await();
 
+            Model
+                .getInstance()
+                .getClient()
+                .getNotificationManager()
+                .vibrate(VibrationType.NOTIFICATION_ALARM)
+                .await();
+
+        } catch (InterruptedException e) {
+                Util.showExceptionAlert(getActivity(), "Interrupted connection", e);
+        } catch (BandException e) {
+                Util.showExceptionAlert(getActivity(), "Band exception", e);
         } catch (Exception e) {
-            Util.showExceptionAlert(getActivity(), "Send message", e);
+                Util.showExceptionAlert(getActivity(), "Send message", e);
+            }
         }
-    }
 }
