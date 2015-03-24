@@ -13,7 +13,7 @@
     <string name="default_summary_score">7.1</string>
     <string name="your_score_text">Your score</string>
     <string name="default_discount">2%</string>
-    <string name="current_discount_label">Current discount:</string>
+    <string name="current_discount_label">Current discount</string>
     <string name="sleep_subtitle">Sleep</string>
     <string name="calories_subtitle">Calories</string>
 </resources>
