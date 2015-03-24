@@ -5,21 +5,27 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.math.BigDecimal;
 
-
-public class SummaryActivity extends ActionBarActivity {
+public class SummaryFragment extends Fragment {
 
     public enum DiscountLevel { BAD, LOW, MEDIUM, HIGH }
+
+    RelativeLayout mLayout;
 
     ReceiveMessages mReceiver = null;
     Boolean mReceiverIsRegistered = false;
@@ -41,17 +47,19 @@ public class SummaryActivity extends ActionBarActivity {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_summary);
+
+        mLayout = (RelativeLayout) inflater.inflate(R.layout.activity_summary, container, false);
 
         mReceiver = new ReceiveMessages();
 
-        ImageButton nav = (ImageButton)findViewById(R.id.walkingSubmenu);
+        ImageButton nav = (ImageButton)mLayout.findViewById(R.id.walkingSubmenu);
         nav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(SummaryActivity.this, WalkingActivity.class);
+                Intent intent = new Intent(getActivity(), WalkingActivity.class);
                 startActivity(intent);
             }
         });
@@ -60,29 +68,7 @@ public class SummaryActivity extends ActionBarActivity {
         Log.v("DEZ", "stepCount: " + Long.toString(stepCount));
         setDiscountLevel(calculateDiscountLevel(stepCount));
         setCalculatedScore(calculateScore(stepCount));
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_summary, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
+        return mLayout;
     }
 
     private void setDiscountLevel(DiscountLevel level) {
@@ -106,7 +92,7 @@ public class SummaryActivity extends ActionBarActivity {
                 break;
         }
 
-        TextView discountAmount = (TextView)findViewById(R.id.discountAmount);
+        TextView discountAmount = (TextView)mLayout.findViewById(R.id.discountAmount);
         discountAmount.setText(discountText);
     }
 
@@ -147,25 +133,7 @@ public class SummaryActivity extends ActionBarActivity {
     }
 
     private void setCalculatedScore(String score) {
-        TextView calculatedScore = (TextView)findViewById(R.id.calculatedScore);
+        TextView calculatedScore = (TextView)mLayout.findViewById(R.id.calculatedScore);
         calculatedScore.setText(score);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (!mReceiverIsRegistered) {
-            registerReceiver(mReceiver, new IntentFilter(MainActivity.DATA_CHANGED));
-            mReceiverIsRegistered = true;
-        }
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        if (mReceiverIsRegistered) {
-            unregisterReceiver(mReceiver);
-            mReceiverIsRegistered = false;
-        }
     }
 }

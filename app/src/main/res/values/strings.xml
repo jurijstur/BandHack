@@ -8,6 +8,11 @@
 
     <string name="walking_title">Walking</string>
     <string name="walking_info">Number of steps per day</string>
+    <string name="walking_today">Today:</string>
+    <string name="walking_average">Average:</string>
+    <string name="walking_next_goal">Next goal:</string>
+    <string name="walking_walking_score">Walking score</string>
+    <string name="walking_quick_tips">Quick tips</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_summary">SummaryActivity</string>
     <string name="default_summary_score">7.1</string>

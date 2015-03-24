@@ -3,7 +3,6 @@ package com.knowledgeprice.bandhack;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.os.AsyncTask;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
@@ -16,7 +15,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import android.widget.TextView;
 
 import com.microsoft.band.BandClient;
 import com.microsoft.band.BandClientManager;
@@ -114,8 +112,12 @@ public class MainActivity extends ActionBarActivity {
 
     protected void setPosition(int position) {
         if(position == 0) {
-            Intent intent = new Intent(MainActivity.this, SummaryActivity.class);
-            startActivity(intent);
+            FragmentManager fragmentManager = getSupportFragmentManager();
+
+            SummaryFragment fragment = new SummaryFragment();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.content_frame, fragment)
+                    .commit();
         }
     }
 
