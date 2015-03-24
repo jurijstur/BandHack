@@ -121,7 +121,9 @@
                     <ImageButton
                         android:id="@+id/walkingSubmenu"
                         android:layout_width="80dp"
-                        android:layout_height="80dp"/>
+                        android:layout_height="80dp"
+                        android:src="@drawable/walking"
+                        android:background="@null"/>
                     <TextView
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
@@ -135,7 +137,9 @@
                     android:background="@color/aviva_orange">
                     <ImageButton
                         android:layout_width="80dp"
-                        android:layout_height="80dp"/>
+                        android:layout_height="80dp"
+                        android:src="@drawable/sleeping"
+                        android:background="@null"/>
                     <TextView
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
@@ -149,7 +153,9 @@
                     android:background="@color/aviva_green">
                     <ImageButton
                         android:layout_width="80dp"
-                        android:layout_height="80dp"/>
+                        android:layout_height="80dp"
+                        android:src="@drawable/heart"
+                        android:background="@null"/>
                     <TextView
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
